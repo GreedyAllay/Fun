@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greedy Allay SE | by Hugo Bouquet</title>
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <link rel="stylesheet" href="archivo.ttf">
+  <style>
+    body {
+      background-image: url("background.png");
+      color: #e0e0e0; /* Light text */
+      margin: 0;
+      padding: 0;
+      font-family: monospace;
+      padding-top: 80px;
+      background-repeat: no-repeat;
+      background-attachment: fixed; 
+      background-size: 100% 100%;
+    }
+    h1, h2 {
+      color: #fff;
+    }
+    input[type="text"], textarea {
+      background-color: #424242;
+      color: #fff;
+      border: 1px solid #616161;
+      transition: background-color 0.3s;
+    }
+    textarea{
+      min-width: 99%;
+      max-width: 99%;
+      width: 99%;
+      height: 200px;
+      transition: background-color 0.3s;
+      color: #B0BEC5;
+    }
+    input:focus {
+      background-color: #ffffff;
+      transition: background-color 0.3s;
+      color: rgb(0, 0, 0);
+      outline-color: #00d9ff;
+      outline-style: solid;
+    }
+    textarea:focus {
+      background-color: #121212;
+      transition: background-color 0.3s;
+      color: white;
+      outline-color: #00d9ff;
+      outline-style: solid;
+    }
+    #results {
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .result-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #121212;
+      transition: background-color 0.3s;
+    }
+    .result-title {
+      color: #2196F3; 
+      font-size: 20px;
+      /* font-weight: bold; */
+    }
+    .result-title:hover {
+      color: #414bff; 
+      font-size: 20px;
+      text-decoration: underline;
+    }
+    .result-description {
+      color: #B0BEC5;
+      font-size: 14px;
+    }
+    .title {
+      align-items: center;
+      width: 100%;
+    }
+    .line {
+      border-color: rgb(163, 163, 163);
+    }
+
+    .card {
+      background-color: rgb(54, 54, 54);
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .card3 {
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .card1 {
+      background-color: rgb(38, 38, 38);
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .input {
+      padding: 10px;
+      border-radius: 5px;
+      padding: 5px;
+      padding-bottom: 10px;
+    }
+    .text {
+      margin-right: 5px;
+      margin-top: 5px;
+    }
+    .button {
+      padding: 10px;
+      background-color: #2196F3;
+      color: white;
+      border-color:  #55b3ff;
+      border-style: solid;
+      min-width: 100px;
+      pointer-events: stroke;
+      border-radius: 10px;
+      transition: background-color 0.1s;
+    }
+    .graybutt {
+      padding: 10px;
+      background-color: #696969;
+      color: white;
+      border-color:  #818181;
+      border-style: solid;
+      min-width: 100px;
+      pointer-events: stroke;
+      border-radius: 10px;
+      transition: background-color 0.1s;
+    }
+    .refresh {
+      padding: 10px;
+      background-color: #696969;
+      color: white;
+      border-color:  #818181;
+      border-style: solid;
+      min-width: 40px;
+      pointer-events: stroke;
+      border-radius: 10px;
+    }
+    .secondarybutt {
+      padding: 10px;
+      background-color: rgb(88, 14, 156);
+      color: white;
+      border-color:  rgb(115, 28, 195);
+      border-style: solid;
+      min-width: 100px;
+      pointer-events: stroke;
+      border-radius: 10px;
+      transition: background-color 0.1s;
+    }
+    /* Top bar styles */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(18, 18, 18, 0.8); /* Semi-transparent background */
+      backdrop-filter: blur(10px); /* Blur effect */
+      color: white;
+      padding: 15px;
+      z-index: 1000; /* Ensure it's above other elements */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+    }
+
+    .top-bar h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .top-bar nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .top-bar a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .top-bar a:hover {
+      color: #2196F3; /* Hover effect for links */
+    }
+    .dropdown {
+      background-color: #212121;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      font-family: verdana;
+    }
+    .pagewidth {
+      max-width: 80%;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .dropdownitem {
+      background-color: rgb(42, 42, 42);
+      border-radius: 0px;
+    }
+    .dropdownitem:hover {
+      background-color:#B0BEC5;
+    }
+    .search {
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar {
+      backdrop-filter: blur(10px); /* Blur effect */
+    }
+    .favico {
+      max-height: 20px;
+    }
+
+    .favico:hover {
+      size: 120%;
+      transition: size 0.3s;
+    }
+
+    button:hover {
+      cursor: pointer;
+      transition: background-color 0.1s;
+      transition: color 0.1s;
+      background-color: #cecece;
+      border-style: dotted;
+      color: black;
+      border-color: rgb(121, 121, 121);
+    }
+    .more {
+      background-color: #121212;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .sym {
+      height: 30px;
+    }
+    .card2 {
+      background-color: rgb(54, 54, 54);
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .cardbutton {
+      background-color: rgb(54, 54, 54);
+      padding: 10px;
+      border-radius: 10px;
+      width: 20%;
+    }
+    .card2:hover {
+      background-color: rgb(34, 34, 34);
+      padding: 10px;
+      border-radius: 10px;
+      pointer-events: pointer;
+    }
+    .create {
+      position: fixed;
+      backdrop-filter: blur(5px); /* Blur effect */
+      width: 100%;
+      height: 100%;
+      background-color: #12121283;
+    }
+    .cardcreate {
+      background-color: rgb(54, 54, 54);
+      padding: 10px;
+      border-radius: 10px;
+      width: 50%;
+      margin-left: 25%;
+      margin-top: 10%;
+    }
+    .red {
+      color: red;
+    }
+    .logo {
+      height: 360px;
+      margin-left: 40%;
+      margin-right: 40%;
+    }
+    .titletext {
+      font-size: 100px;
+      margin-left: 30%;
+      margin-right: 10%;
+      margin-top: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .start  {
+      font-size: 50px;
+      margin-left: 40%;
+      margin-right: 10%;
+      font-family: Arial, Helvetica, sans-serif;
+      margin-top: 50px;
+      background-color: #002e6b;
+      border-color: #003983;
+      border-style: solid;
+      border-radius: 10px;
+      padding: 10px;
+      color: white;
+      transition: background-color 0.1s;
+    }
+    .start:hover{
+      transition: background-color 0.1s;
+      background-color: #3374ff;
+      border-color: #55b3ff;
+      color: #aeceff;
+    }
+  </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="index.html"><h1><img src="greedyallay.png" class="favico"></h1></a>
+        <!-- <nav>
+          <a href="#save-website">Save Website</a>
+          <a href="#user-websites">User Websites</a>
+          <a href="#search-results">Search Results</a>
+        </nav> -->
+      </div>
+
+  <!-- Top Navigation Bar -->
+
+  <div class="homeicon">
+    <img class="logo" src="deadserver.svg">
+    <span class="titletext">Site not found</span><br>
+  </div>
+
+</body>
+</html>

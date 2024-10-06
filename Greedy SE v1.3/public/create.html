@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greedy Allay SE | by Hugo Bouquet</title>
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <link rel="stylesheet" href="website.css">
+<style>
+  .hideme {
+    background-color: rgba(178, 34, 34, 0);
+    color: rgba(240, 248, 255, 0);
+    width: 1%;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="top-bar">
+    <h1><a href="index.html"><img src="greedyallay.png" class="favico"></a></h1>
+    <p id="token" hidden></p><button class="button" onclick="document.getElementById('token').hidden = false">show token</button>
+    <nav>
+      <a onclick="showCreator()">Save Website</a>
+      <a href="#user-websites" onclick="hideCreator()">Global Websites</a>
+      <a href="login.html">Login</a>
+      <a ></a>
+      <a ></a>
+    </nav>
+  </div>
+    <div class="cardbutton" id="showcreator" onclick="showCreator()">Upload custom website...</div>
+    <div class="create" id="creating" hidden>
+    <div class="cardcreate" id="save-website" hidden>
+      <div id="save-website" onclick="hideCreator()"><img class="sym" id="x"src="close.svg" onmouseenter="hoverX()"><img class="sym" src="closehover.svg" onmouseleave="unhoverX()" id="x1" hidden></div>
+      <h2 class="subtext">Save a Website</h2>
+      <hr class="line">
+      <form action="/save" method="POST">
+        <span class="text">Name it</span>
+        <input class="input" type="text" name="name" placeholder="Website Name" required>
+        <input type="text" name="accountToken" placeholder="accountToken" id="accountToken" class="hideme" hidden>
+        <br> <span class="red">Do not use any capital letters, or your site will corrupt!</span> <br>
+        <span class="red">Everyone can see your site! Be careful not to upload any inappropriate stuff.</span>
+  <br>
+        
+        <br>
+        <span class="text">HTML code:</span><br>
+        <textarea id="code" class="input" name="code" placeholder="Enter HTML code here" required></textarea><br>
+        <br>
+        <button class="button" type="submit">Save</button>
+        <button class="graybutt" type="button" onclick="show()">more</button>
+        <br><br>
+        <div class="more" id="more" hidden>
+          insert:<br><br>
+          <button class="graybutt" type="button" onclick="hide()">hide</button>
+          <button class="secondarybutt" type="button" onclick="addStuff()">Auto Styling</button>
+          <button class="secondarybutt" type="button" onclick="addYouTube()">YouTube Embed</button>
+          <vl>|</vl>
+          <button class="secondarybutt" type="button" onclick="addTitle()">Add Title</button>
+          <button class="secondarybutt" type="button" onclick="addLink()">Add Link</button>
+          <button class="secondarybutt" type="button" onclick="addButton()">Add Button</button>
+          <button class="secondarybutt" type="button" onclick="addLine()">Line</button>
+        
+        
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="pagewidth">
+  <br>
+  <div class="card3">
+  <h2 class="subtext" id="user-websites">User Submitted Websites</h2>
+  <form>
+    <input class="search" type="text" name="searchTerm" placeholder="Search by name">
+    <select id="sortBy" class="dropdown">
+      <option class="dropdownitem" value="newest">Newest</option>
+      <option class="dropdownitem" value="oldest">Oldest</option>
+      <option class="dropdownitem" value="alphabetical">Alphabetical</option>
+    </select>
+    <button class="refresh" onclick="searchAsYouType">↻</button>
+  </form>
+  <!-- <h2 class="subtext" id="search-results">Search Results</h2> -->
+  <div id="results"></div>
+</div>
+</div>
+<script>
+  const searchAsYouType = async (sortBy) => {
+    const searchTerm = document.querySelector('input[name="searchTerm"]').value.toLowerCase();
+    const resultsList = document.getElementById('results');
+    resultsList.innerHTML = '';
+
+    try {
+      const response = await fetch(`/search?searchTerm=${searchTerm}&sortBy=${sortBy}`);
+      const data = await response.json();
+
+      data.results.forEach((result) => {
+        const resultItem = document.createElement('div');
+        resultItem.classList.add('result-item');
+        const title = document.createElement('div');
+        title.classList.add('result-title');
+        title.textContent = result;
+        resultItem.appendChild(title);
+
+        // Add click event to open the site in an iframe-view page
+        resultItem.addEventListener('click', () => {
+          window.location.href = `/iframe-view.html?site=${encodeURIComponent(result)}`;
+        });
+
+        resultsList.appendChild(resultItem);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const searchInput = document.querySelector('input[name="searchTerm"]');
+  searchInput.addEventListener('input', () => {
+    searchAsYouType(document.getElementById("sortBy").value);
+  });
+
+  document.getElementById("sortBy").addEventListener("change", () => {
+    searchAsYouType(document.getElementById("sortBy").value);
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    searchAsYouType('newest'); // Default sort by newest
+    loadPenguinModData()
+  });
+
+  function hide() {
+         document.getElementById('more').hidden = true
+
+      }
+  function show() {
+         document.getElementById('more').hidden = false
+      }
+
+  function addStuff() {
+    console.log('working')
+    document.getElementById("code").value += "<link rel=\"stylesheet\" href=\"../website.css\">";
+  }
+
+  function addYouTube() {
+    console.log('working')
+    document.getElementById("code").value += "<iframe width=\"1280\" height=\"720\" src=\"ENTER URL HERE\" frameborder=\"0\"></iframe>";
+  }
+  function addTitle() {
+    console.log('working')
+    document.getElementById("code").value += "<h1>Hello there</h1>";
+  }
+
+  function addButton() {
+    console.log('working')
+    document.getElementById("code").value += "<button>im a button</button>";
+  }
+  function addLine() {
+    console.log('working')
+    document.getElementById("code").value += "<hr>";
+  }
+  function addLink() {
+    console.log('working')
+    document.getElementById("code").value += "<a href=\"URL_HERE\">linkie</a>";
+  }
+  function showCreator() {
+    document.getElementById('save-website').hidden = false
+    document.getElementById('showcreator').hidden = true
+    document.getElementById('creating').hidden = false
+    loadPenguinModData()
+  }
+  
+  function hideCreator() {
+    document.getElementById('save-website').hidden = true
+    document.getElementById('showcreator').hidden = false
+    document.getElementById('creating').hidden = true
+  }
+
+  function hoverX() {
+    document.getElementById('x').hidden = true
+    document.getElementById('x1').hidden = false
+  }
+  
+  function unhoverX() {
+    document.getElementById('x').hidden = false
+    document.getElementById('x1').hidden = true
+  }
+
+    // Save scroll position before page unloads
+    window.addEventListener('beforeunload', () => {
+    localStorage.setItem('scrollPosition', window.scrollY);
+  });
+
+  // Restore scroll position after page load
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedPosition = localStorage.getItem('scrollPosition');
+    if (savedPosition) {
+      window.scrollTo(0, parseInt(savedPosition, 10));
+    }
+  });
+  
+  const loadPenguinModData = () => {
+      // Get the namespace used by PenguinMod, in this case 'd'
+      const namespace = "accountKey";
+
+      // The key used by the PenguinMod localStorage extension
+      const storageKey = `extensions.turbowarp.org/local-storage:${namespace}`;
+
+      // Retrieve the stored data from localStorage under the PenguinMod namespace 'd'
+      const storedData = localStorage.getItem(storageKey);
+
+      if (storedData) {
+        try {
+          // Parse the JSON data
+          const parsedData = JSON.parse(storedData);
+
+          // Check if the data object exists and contains the values you saved
+          if (parsedData && parsedData.data) {
+            let output = "";
+
+            // Loop through all the saved data entries and display them
+            for (const [key, value] of Object.entries(parsedData.data)) {
+            output += `${key}: ${value}<br>`;
+            if (key === "accountToken") { // Use === for comparison
+            token = value; // No need to use template literals here
+            }
+            }
+            // Display the data in the HTML
+            document.getElementById("token").innerHTML = output;
+            document.getElementById("accountToken").value = token;
+          } else {
+            document.getElementById("token").innerText = "No valid data found.";
+          }
+        } catch (e) {
+          console.error("Error parsing stored data:", e);
+          document.getElementById("token").innerText = "Error parsing stored data.";
+        }
+      } else {
+        document.getElementById("token").innerText = "No data found.";
+      }
+    };
+</script>
+
+</body>
+</html>

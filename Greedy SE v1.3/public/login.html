@@ -1,0 +1,102 @@
+<iframe src="loginclient.html" width="960" height="720"></iframe>
+<link rel="stylesheet" href="website.css">
+<style>
+    body {
+        border-color: black;
+        border-style: solid;
+        background-color: black;
+    }
+    iframe {
+        border-color: black;
+        border-style: solid;
+        margin-left: 10%;
+        margin-top: 10px;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.479);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+    }
+</style>
+<div class="top-bar">
+    <a href="create.html"><h1><img src="greedyallay.png" class="favico"></h1></a>
+    <!-- <nav>
+      <a href="#save-website">Save Website</a>
+      <a href="#user-websites">User Websites</a>
+      <a href="#search-results">Search Results</a>
+    </nav> -->
+  </div>
+<p id="token"></p>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    forever()
+  });
+
+
+    const forever = () => {
+      setInterval(() => {
+        loadPenguinModData()
+      }, 1000); // Runs every 1000ms (1 second)
+    };
+    // Start the forever function
+
+    const loadPenguinModData = () => {
+      // Get the namespace used by PenguinMod, in this case 'd'
+      const namespace = "accountKey";
+
+      // The key used by the PenguinMod localStorage extension
+      const storageKey = `extensions.turbowarp.org/local-storage:${namespace}`;
+
+      // Retrieve the stored data from localStorage under the PenguinMod namespace 'd'
+      const storedData = localStorage.getItem(storageKey);
+
+      if (storedData) {
+        try {
+          // Parse the JSON data
+          const parsedData = JSON.parse(storedData);
+
+          // Check if the data object exists and contains the values you saved
+          if (parsedData && parsedData.data) {
+            let output = "";
+
+            // Loop through all the saved data entries and display them
+            for (const [key, value] of Object.entries(parsedData.data)) {
+              output += `${key}: ${value}<br>`;
+            }
+
+            // Display the data in the HTML
+            document.getElementById("token").innerHTML = output;
+          } else {
+            document.getElementById("token").innerText = "No valid data found.";
+          }
+        } catch (e) {
+          console.error("Error parsing stored data:", e);
+          document.getElementById("token").innerText = "Error parsing stored data.";
+        }
+      } else {
+        document.getElementById("token").innerText = "No data found.";
+      }
+    };
+
+    // async function checkClipboardForToken() {
+    //   try {
+    //     // Access clipboard text
+    //     const text = await navigator.clipboard.readText();
+
+    //     // Check if the clipboard text is 100 characters long
+    //     if (text.length === 100) {
+    //       // Set the clipboard text as the accountToken in localStorage
+    //       localStorage.setItem('accountToken', text);
+    //       console.log('100-character accountToken found and set in localStorage:', text);
+    //       document.getElementById("token").innerHTML = text;
+    //     }
+    //   } catch (err) {
+    //     console.error('Failed to read clipboard contents:', err);
+    //   }
+    // }
+
+    // // Set an interval to constantly check the clipboard every 5 seconds
+    // setInterval(() => {
+    //   checkClipboardForToken();
+    // }, 5000); // Checks every 5 seconds (5000 milliseconds)
+</script>

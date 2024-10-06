@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saving...</title>
+  <meta http-equiv="refresh" content="100" id="redirectMeta"> <!-- Will update dynamically -->
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    .message {
+      text-align: center;
+    }
+    .message h1 {
+      font-size: 24px;
+    }
+    h1 {
+        size: 1000px;
+        font-size: larger;
+    }
+    img {
+        width: 200px;
+        margin-right: 400px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="message">
+    <h1><img src="deadserver.svg"> Uhmmm</h1>
+    <p>The website might've been deleted, or is corrupted. Click <a id="manualRedirectLink" href="index.html">click here</a> to return.</p>
+  </div>
+
+  <script>
+    // Get the redirect URL from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectTo = urlParams.get('redirectTo') || 'index.html';
+
+    // Update the meta tag to redirect after a short delay
+    document.getElementById('redirectMeta').setAttribute('content', `3;url=index.html`);
+
+    // Update the manual redirect link
+    document.getElementById('manualRedirectLink').setAttribute('href', "index.html");
+  </script>
+
+</body>
+</html>

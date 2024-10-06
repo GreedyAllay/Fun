@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Load Data from PenguinMod</title>
+</head>
+<body>
+  <h1>Load Data Saved in PenguinMod (Namespace: user)</h1>
+
+  <button onclick="loadPenguinModData()">Load Data from Namespace `${namespace}`</button>
+  <p id="output"></p>
+
+  <script>
+    const loadPenguinModData = () => {
+      // Get the namespace used by PenguinMod, in this case 'd'
+      const namespace = "accountKey";
+
+      // The key used by the PenguinMod localStorage extension
+      const storageKey = `extensions.turbowarp.org/local-storage:${namespace}`;
+
+      // Retrieve the stored data from localStorage under the PenguinMod namespace 'd'
+      const storedData = localStorage.getItem(storageKey);
+
+      if (storedData) {
+        try {
+          // Parse the JSON data
+          const parsedData = JSON.parse(storedData);
+
+          // Check if the data object exists and contains the values you saved
+          if (parsedData && parsedData.data) {
+            let output = "Stored Data:<br>";
+
+            // Loop through all the saved data entries and display them
+            for (const [key, value] of Object.entries(parsedData.data)) {
+              output += `${key}: ${value}<br>`;
+            }
+
+            // Display the data in the HTML
+            document.getElementById("output").innerHTML = output;
+          } else {
+            document.getElementById("output").innerText = "No valid data found.";
+          }
+        } catch (e) {
+          console.error("Error parsing stored data:", e);
+          document.getElementById("output").innerText = "Error parsing stored data.";
+        }
+      } else {
+        document.getElementById("output").innerText = "No data found.";
+      }
+    };
+  </script>
+</body>
+</html>

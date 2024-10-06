@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saving...</title>
+  <meta http-equiv="refresh" content="3" id="redirectMeta"> <!-- Will update dynamically -->
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    .message {
+      text-align: center;
+    }
+    .message h1 {
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="message">
+    <h1>Website saved! Redirecting...</h1>
+    <p>If you're not redirected in a few seconds, <a id="manualRedirectLink" href="#">click here</a>.</p>
+  </div>
+
+  <script>
+    // Get the redirect URL from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectTo = urlParams.get('redirectTo') || 'index.html';
+
+    // Update the meta tag to redirect after a short delay
+    document.getElementById('redirectMeta').setAttribute('content', `3;url=${redirectTo}`);
+
+    // Update the manual redirect link
+    document.getElementById('manualRedirectLink').setAttribute('href', redirectTo);
+  </script>
+
+</body>
+</html>

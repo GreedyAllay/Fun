@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Viewer</title>
+  <link rel="icon" type="image/x-icon" href="page.png">
+  <style>
+    body {
+      background-color: #ffffff; /* Dark background */
+      color: #e0e0e0; /* Light text */
+      margin: 0;
+      padding: 0;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(18, 18, 18, 0.8); /* Semi-transparent background */
+      backdrop-filter: blur(10px); /* Blur effect */
+      color: white;
+      padding: 15px;
+      z-index: 1000; /* Ensure it's above other elements */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+      max-height: 20px;
+    }
+
+    .top-bar h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .top-bar nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .top-bar a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .top-bar a:hover {
+      color: #2196F3; /* Hover effect for links */
+    }
+
+
+    /* Adjust page content to prevent it from being hidden under the sticky top bar */
+    body {
+      padding-top: 50px; /* Space for the sticky bar */
+    }
+
+    /* Styles for the iframe */
+    iframe {
+      width: 100%;
+      height: calc(100vh - 50px); /* Adjust height according to top bar */
+      border: none;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: darkslategray;
+    }
+
+    ::-webkit-scrollbar{
+        background-color: rgba(0, 0, 0, 0.349);
+    }
+    .favico {
+      max-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="top-bar">
+    <a href="create.html"><h1><img src="greedyallay.png" class="favico"></h1></a>
+    <!-- <nav>
+      <a href="#save-website">Save Website</a>
+      <a href="#user-websites">User Websites</a>
+      <a href="#search-results">Search Results</a>
+    </nav> -->
+  </div>
+
+  <!-- Iframe to load the website -->
+  <iframe id="websiteFrame" src=""></iframe>
+
+  <script>
+    // Function to get query parameters from the URL
+    function getQueryParameter(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Get the 'site' parameter from the URL and load it into the iframe
+    window.addEventListener('DOMContentLoaded', () => {
+      const site = getQueryParameter('site');
+      if (site) {
+        document.getElementById('websiteFrame').src = `/websites/${site}`;
+      } else {
+        document.getElementById('websiteFrame').src = 'about:blank'; // Default blank page
+      }
+    });
+    
+  </script>
+
+</body>
+</html>

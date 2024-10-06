@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clipboard Watcher</title>
+</head>
+<body>
+
+  <h1>Clipboard Watcher</h1>
+  <p>This script watches your clipboard for a 100-character string and stores it as 'accountToken' in localStorage.</p>
+
+  <script>
+    // Function to check clipboard and set localStorage
+    async function checkClipboardForToken() {
+      try {
+        // Access clipboard text
+        const text = await navigator.clipboard.readText();
+
+        // Check if the clipboard text is 100 characters long
+        if (text.length === 100) {
+          // Set the clipboard text as the accountToken in localStorage
+          localStorage.setItem('accountToken', text);
+          console.log('100-character accountToken found and set in localStorage:', text);
+        }
+      } catch (err) {
+        console.error('Failed to read clipboard contents:', err);
+      }
+    }
+
+    // Set an interval to constantly check the clipboard every 5 seconds
+    setInterval(() => {
+      checkClipboardForToken();
+    }, 5000); // Checks every 5 seconds (5000 milliseconds)
+  </script>
+
+</body>
+</html>
